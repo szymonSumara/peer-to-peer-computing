@@ -1,0 +1,48 @@
+*{
+    font-family: Arial;
+}
+
+body{
+    background-color:aliceblue;
+}
+
+#container{
+    max-width: 1000px;
+    text-align: center;
+    margin: 0 auto;
+}
+
+table{
+    margin-top: 30px;
+    width: 100%;
+    border-collapse: collapse;
+}
+input[type=text]{
+    font-size: 1.3em;
+    padding: 0.3em;
+    width: 78%;
+}
+
+input[type=submit]{
+    padding: 0.3em;
+    width: 18%;
+    font-size: 1.3em;
+}
+
+thead  td{
+    background-color: #ccc;
+    font-weight: bold;
+}
+tbody  td{
+    padding: 0.2em;
+    max-width: 20%;
+    overflow: hidden;
+    text-align: center;
+}
+tr{
+    background-color: #ffffff;
+}
+
+tbody > tr:nth-child(2n){
+    background-color: #ddd;
+}
