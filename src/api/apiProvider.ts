@@ -9,7 +9,7 @@ export default class ApiProvider{
     constructor(){
         this.inc = 0;
         this.route = express();
-        this.route.use(express.static('api/public'))
+        this.route.use(express.static('public'))
         this.route.get('/add/:hash', (req: Request, res :Response) => {
             console.log("Get job:" + req.params.hash);
             res.send("Start task: " + req.params.hash);
