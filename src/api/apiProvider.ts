@@ -2,16 +2,20 @@ import  express from 'express'
 import { Request, Response } from 'express'
 import http from 'http'
 import { AddressInfo } from 'net'
+import JobManager from "../task/jobManager";
 
 export default class ApiProvider{
     private route : express.Express;
     private inc : number;
-    constructor(){
+    private jobManager : JobManager;
+    constructor( jobManager : JobManager){
+        this.jobManager = jobManager;
         this.inc = 0;
         this.route = express();
         this.route.use(express.static('public'))
         this.route.get('/add/:hash', (req: Request, res :Response) => {
             console.log("Get job:" + req.params.hash);
+            this.jobManager.addJobAndPropagate(req.params.hash);
             res.send("Start task: " + req.params.hash);
         });
 
@@ -20,25 +24,8 @@ export default class ApiProvider{
         });
 
         this.route.get('/stat', (req: Request, res :Response) => {
-            this.inc += 1;
             res.send(
-                [
-                    {
-                        hash:"test1",
-                        blockQueue: [2,30,],
-                        actualBlocks: [3,4,31],
-                        actualSubtaskNumber : [32],
-                        nextBlock : this.inc,
-                        result : null,
-                    },{
-                        hash:"test2",
-                        blockQueue: [],
-                        actualBlocks: [],
-                        actualSubtaskNumber : null,
-                        nextBlock : null,
-                        result : "abc",
-                     }
-                ]
+                this.jobManager.getStat()
             );
         })
 

@@ -1,10 +1,10 @@
 import { MessageType } from "./messageType";
-import Work from "../work/work";
+import WorkPartInformation from "../work/workPartInformation";
 export default interface NewJob{
     type : MessageType.NEW_JOB,
     hash : string,
     nextBlock : number,
-    blocksInProgress : Work[],
+    blocksInProgress : WorkPartInformation[],
     blocksInQueue : number[],
 
 }

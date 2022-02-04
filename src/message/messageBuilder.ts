@@ -1,5 +1,5 @@
 import {MessageType} from "./messageType";
-import Work from "../work/work";
+import WorkPartInformation from "../work/workPartInformation";
 import Host from "../communication/host";
 import Message from "./messge";
 import Ping from "./ping";
@@ -19,9 +19,14 @@ export default class MessageBuilder{
     private result: string  | undefined;
     private otherHosts: Host[]  | undefined;
     private nextBlock: number  | undefined;
-    private blocksInProgress: Work[]  | undefined;
+    private blocksInProgress: WorkPartInformation[]  | undefined;
     private blockInQueue: number[] | undefined;
 
+    constructor() {
+        this.blockInQueue = [];
+        this.blocksInProgress = [];
+        this.nextBlock = 0;
+    }
 
     setType(type: MessageType){
         this.type = type;
@@ -58,12 +63,12 @@ export default class MessageBuilder{
         return this;
     }
 
-    setNextBlock(blockNumber: number){
-        this.blockNumber = blockNumber;
+    setNextBlock(nextBlock: number){
+        this.nextBlock = nextBlock;
         return this;
     }
 
-    setBlocksInProgress(blocksInProgress: Work[]){
+    setBlocksInProgress(blocksInProgress: WorkPartInformation[]){
         this.blocksInProgress = blocksInProgress;
         return this;
     }

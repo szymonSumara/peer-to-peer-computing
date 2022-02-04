@@ -7,7 +7,7 @@ import Message from "../message/messge";
 import MessageBuilder from "../message/messageBuilder";
 import {MessageType} from "../message/messageType";
 import config from "config";
-
+//Zliczanie w nieskonczonczoność
 export default class ConnectionManager{
 
     public readonly id : string;
@@ -56,6 +56,8 @@ export default class ConnectionManager{
     }
 
     send = (message : Message ) => {
+        if( message.data.type !== MessageType.PING)
+            console.log("Send :" + message.data.type)
         const convertedMessage = JSON.stringify(message);
         this.others.forEach( (host) => {
             this.socket.send(
@@ -111,14 +113,16 @@ export default class ConnectionManager{
         if(updatedHost.id === this.id) return;
         const index = this.others.findIndex((host) => host.id == updatedHost.id)
 
-        if( index < 0 )
+        if( index < 0 ) {
             this.others.push(new Host(updatedHost.id, updatedHost.ip, updatedHost.port, updatedHost.date));
-        else
+            this.connectionObservers.forEach((observer) =>{
+                observer.notifyNewConnection(updatedHost.id);
+            })
+        }else
             this.others[index].updateLastActivityTime(updatedHost.date);
     }
 
     onMessage = (message : string, remote : any) => {
-
         let  parsedMessage : Message = JSON.parse(message);
 
         const nodeId = parsedMessage.sender;
@@ -131,11 +135,13 @@ export default class ConnectionManager{
             parsedMessage.data.othersHosts.forEach(otherHost =>
                 this.updateSeder(otherHost)
             )
-        }else
-            this.messageObservers.forEach( observer  =>
-                observer.reciveMessage(parsedMessage)
-            )
+        }else {
+            console.log("Recive :" + parsedMessage.data.type)
 
+            this.messageObservers.forEach(observer =>
+                observer.receiveMessage(parsedMessage)
+            )
+        }
     }
 
     subscribeMessage(observer :  MessageObserver){

@@ -1,4 +1,5 @@
-export default class Alphabet{
+
+export default class Alphabet {
     private static letters : string = "qwertyuiopasdfghjklzxcvbnmQWERTYUIOPASDFGHJKLZXCVBNM1234567890";
 
     letterFromInt( number : number ) {
@@ -11,3 +12,5 @@ export default class Alphabet{
         return Alphabet.letters.length;
     }
 }
+
+

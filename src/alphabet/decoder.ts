@@ -1,7 +1,6 @@
-import Alphabet from "./alphabet";
+import Alphabet from "../alphabet/alphabet";
 
 export default class Decoder{
-
     private alphabet : Alphabet;
 
     constructor(alphabet : Alphabet){
@@ -19,3 +18,4 @@ export default class Decoder{
         return result;
     }
 }
+

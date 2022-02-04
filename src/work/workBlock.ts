@@ -1,18 +1,18 @@
-import Decoder from "../alphabet/decoder";
 import Alphabet from "../alphabet/alphabet";
+import Decoder from "../alphabet/decoder";
 
 export default class WorkBlock{
 
     private static workSize : number = 4;
     private iterator : number;
     private readonly end : number;
-    private readonly prefix : string;
+    public readonly prefix : string;
     private decoder : Decoder;
     private readonly alphabet : Alphabet;
 
     constructor( number : number) {
 
-        this.alphabet = new Alphabet();
+        this.alphabet = new Alphabet()
         this.decoder = new Decoder(this.alphabet);
 
         if(number === 0){

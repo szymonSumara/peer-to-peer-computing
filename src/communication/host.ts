@@ -13,7 +13,6 @@ export default class Host{
         this.id = params[0];
         this.ip = params[1];
         this.port = params[2];
-        console.log(params[3]);
         if(params[3] !== undefined) this.date = new Date(params[3])
         else this.date = new Date();
     }
