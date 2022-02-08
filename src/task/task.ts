@@ -20,7 +20,6 @@ export default class Task{
         });
     }
 
-
     run(){
         this.worker = new Worker('./subTask.ts',{workerData : {hash : this.hash, blockNumber:this.blockNumber}})
     }
@@ -29,4 +28,5 @@ export default class Task{
         console.log("Interupt")
         this.worker.terminate();
         console.log("Interupt exit")
-    }}
+    }
+}

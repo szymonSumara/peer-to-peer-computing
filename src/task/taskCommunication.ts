@@ -39,7 +39,7 @@ export default class TaskCommunication implements MessageObserver{
             .setBlocksInQueue(state?.blockQueue || [])
             .getMessage();
 
-        this.connectionManager.send(message);
+        this.connectionManager.broadcast(message);
 
     }
 
@@ -50,7 +50,7 @@ export default class TaskCommunication implements MessageObserver{
             .setResult(result)
             .getMessage();
 
-        this.connectionManager.send(message);
+        this.connectionManager.broadcast(message);
     }
 
     public finishTask(hash : string,  blockNumber : number){
@@ -60,7 +60,7 @@ export default class TaskCommunication implements MessageObserver{
             .setBlockNumber(blockNumber)
             .getMessage();
 
-        this.connectionManager.send(message);
+        this.connectionManager.broadcast(message);
     }
 
     public startTask(hash : string,  workInfo : WorkPartInformation ){
@@ -71,7 +71,7 @@ export default class TaskCommunication implements MessageObserver{
             .setBlockNumber(workInfo.blockNumber)
             .getMessage();
 
-        this.connectionManager.send(message);
+        this.connectionManager.broadcast(message);
     }
 
     public findResult(hash : string, result : string){

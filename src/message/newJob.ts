@@ -6,5 +6,4 @@ export default interface NewJob{
     nextBlock : number,
     blocksInProgress : WorkPartInformation[],
     blocksInQueue : number[],
-
 }

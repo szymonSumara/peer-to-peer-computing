@@ -38,12 +38,6 @@ export default class JobManager{
         this.taskCommunication.startJob(hash);
     }
 
-    // forwardMessage(message : Message){
-    //     //TODO: unsubscribe
-    //     this.connectionManager.send(message);
-    // }
-
-
     finishJob(hash : string, result :string){
         const job = this.jobs.get(hash);
         if(job !== undefined) {
@@ -51,19 +45,4 @@ export default class JobManager{
             job.finish(result);
         }
     }
-
-
-    // receiveMessage(message:Message){
-    //     if(message.data.type === MessageType.NEW_JOB){
-    //         this.addJob(message.data.hash, message.data.nextBlock, message.data.blocksInProgress, message.data.blocksInQueue);
-    //     }else if(message.data.type === MessageType.END_JOB){
-    //         this.finishJob(message.data.hash, message.data.result);
-    //     }else{
-    //         if( message.data.type === MessageType.END_TASK || message.data.type === MessageType.START_TASK ){
-    //             console.log("Message Type" + message.data.type);
-    //             const job = this.jobs.get(message.data.hash);
-    //             if(job !== undefined) job.receiveMessage(message);
-    //         }
-    //     }
-    // }
 }
