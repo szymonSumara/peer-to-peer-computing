@@ -15,7 +15,7 @@ export default class App{
     }
 
     start(){
-        this.api.listen(8080);
-        this.connection.connect("127.0.0.1" , 3000);
+       // this.api.listen(8080);
+        this.connection.connect("127.0.0.1" , 53109);
     }
 }

@@ -16,7 +16,7 @@ export default class Task{
             if(!message.find)
                 this.job.finishTask(blockNumber);
             else
-                this.job.finishAndPropagate(message.result);
+                this.job.handleFindResult(message.result);
         });
     }
 
