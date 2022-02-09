@@ -1,5 +1,4 @@
-import Alphabet from "../../../src/alphabet/alphabet";
-import Decoder from "../../../src/alphabet/decoder";
+import {Alphabet, Decoder } from "../../../src/alphabet";
 
 describe('Decoder', () => {
 

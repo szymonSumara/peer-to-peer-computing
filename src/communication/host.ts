@@ -1,4 +1,4 @@
-export default class Host{
+export  class Host{
 
     public id : string;
     public ip : string;

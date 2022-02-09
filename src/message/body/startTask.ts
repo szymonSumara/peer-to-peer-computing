@@ -1,6 +1,6 @@
-import { MessageType } from "./messageType";
+import { MessageType } from "../index";
 
-export default interface StartTask{
+export interface StartTask{
     type : MessageType.START_TASK,
     hash : string,
     startTime : Date,

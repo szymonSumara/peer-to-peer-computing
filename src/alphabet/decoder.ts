@@ -1,6 +1,6 @@
-import Alphabet from "../alphabet/alphabet";
+import {Alphabet} from "../alphabet";
 
-export default class Decoder{
+export class Decoder{
     private alphabet : Alphabet;
 
     constructor(alphabet : Alphabet){

@@ -2,7 +2,7 @@ import  express from 'express'
 import { Request, Response } from 'express'
 import http from 'http'
 import { AddressInfo } from 'net'
-import JobManager from "../task/jobManager";
+import { JobManager} from "../job";
 
 export default class ApiProvider{
     private route : express.Express;
@@ -16,7 +16,7 @@ export default class ApiProvider{
         this.route.get('/add/:hash', (req: Request, res :Response) => {
             console.log("Get job:" + req.params.hash);
             this.jobManager.addJobAndPropagate(req.params.hash);
-            res.send("Start task: " + req.params.hash);
+            res.send("Start job: " + req.params.hash);
         });
 
         this.route.get('/', (req: Request, res :Response) => {

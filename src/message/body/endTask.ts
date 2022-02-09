@@ -1,6 +1,6 @@
-import { MessageType } from "./messageType";
+import { MessageType } from "../index";
 
-export default interface EndTask{
+export interface EndTask{
     type : MessageType.END_TASK,
     hash : string,
     blockNumber : number,

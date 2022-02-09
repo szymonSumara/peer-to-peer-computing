@@ -1,15 +1,8 @@
-import {MessageType} from "./messageType";
-import WorkPartInformation from "../work/workPartInformation";
-import Host from "../communication/host";
-import Message from "./messge";
-import Ping from "./ping";
-import NewJob from "./newJob";
-import EndJob from "./endJob";
-import StartTask from "./startTask";
-import EndTask from "./endTask";
+import {Ping, EndJob, NewJob , EndTask , StartTask , Message , MessageType} from "../message";
+import {WorkPartInformation} from "../work";
+import {Host} from "../communication";
 
-
-export default class MessageBuilder{
+export class MessageBuilder{
 
     private type: MessageType | undefined;
     private sender: string  | undefined;

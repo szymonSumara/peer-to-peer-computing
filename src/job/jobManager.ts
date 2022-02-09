@@ -1,16 +1,13 @@
-import Job from "./job";
-import TaskCommunication from "./taskCommunication";
-import JobState from "./jobState";
+import {Job, JobCommunication, JobState} from "../job";
 
-
-export default class JobManager{
+export class JobManager{
 
     private jobs : Map<string, Job>;
-    private taskCommunication : TaskCommunication;
+    private jobCommunication : JobCommunication;
 
     constructor(){
         this.jobs = new Map<string, Job>();
-        this.taskCommunication = new TaskCommunication(this);
+        this.jobCommunication = new JobCommunication(this);
     }
 
     getStat(){
@@ -24,24 +21,27 @@ export default class JobManager{
     }
 
     addJob(hash : string , jobState : JobState) : boolean{
-        if(this.jobs.get(hash) === undefined) {
-            const job = new Job(hash, this.taskCommunication, jobState);
+        const job = new Job(hash, this.jobCommunication, jobState);
+
+        if(job === undefined) {
             this.jobs.set(hash, job);
-            this.taskCommunication.addJobAndSubscribe(job);
+            this.jobCommunication.addJobAndSubscribe(job);
             return true;
+        }else if(job.isFinished){
+            this.jobCommunication.propagateFinishJob(hash, job.result);
         }
        return false;
     }
 
     addJobAndPropagate( hash : string) {
         this.addJob(hash, new JobState());
-        this.taskCommunication.startJob(hash);
+        this.jobCommunication.propagateStartJob(hash);
     }
 
     finishJob(hash : string, result :string){
         const job = this.jobs.get(hash);
         if(job !== undefined) {
-            this.taskCommunication.removeJobAndUnsubscribe(job);
+            this.jobCommunication.removeJobAndUnsubscribe(job);
             job.finish(result);
         }
     }

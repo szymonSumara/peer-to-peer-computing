@@ -1,7 +1,6 @@
-import Alphabet from "../alphabet/alphabet";
-import Decoder from "../alphabet/decoder";
+import {Alphabet, Decoder} from "../alphabet"
 
-export default class WorkBlock{
+export class WorkBlock{
 
     private static workSize : number = 4;
     private iterator : number;

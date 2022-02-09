@@ -1,22 +1,20 @@
-import WorkPartInformation from "../work/workPartInformation";
-import ConnectionObserver from "../communication/connectionObserver";
-import Task from "./task";
-import JobState from "./jobState";
-import TaskCommunication from "./taskCommunication";
+import {WorkPartInformation} from "../work";
+import {ConnectionObserver} from "../communication";
+import {Task, JobState, JobCommunication} from "../job";
 
-export default class Job implements ConnectionObserver{
+export class Job implements ConnectionObserver{
 
     public readonly hash : string;
     private readonly state : JobState;
-    private isFinished : boolean = false;
-    private result : string = "";
-    private communication : TaskCommunication;
+    public isFinished : boolean = false;
+    public result : string = "";
+    private communication : JobCommunication;
     private actualTask : Task | undefined;
     private work : WorkPartInformation | undefined ;
 
-    constructor(hash : string, communication : TaskCommunication );
-    constructor(hash : string, communication : TaskCommunication, state : JobState );
-    constructor(hash : string, communication : TaskCommunication, state? : JobState){
+    constructor(hash : string, communication : JobCommunication );
+    constructor(hash : string, communication : JobCommunication, state : JobState );
+    constructor(hash : string, communication : JobCommunication, state? : JobState){
         this.state = state || new JobState();
         this.communication = communication;
         this.hash = hash;
@@ -35,6 +33,7 @@ export default class Job implements ConnectionObserver{
     }
 
     private startNewTask(){
+        this.actualTask?.interupt();
         let blockNumber  =  this.state.next();
 
         this.work = {
@@ -44,26 +43,28 @@ export default class Job implements ConnectionObserver{
         }
 
         this.actualTask = new Task(this.hash, blockNumber, this);
-        this.communication.startTask(this.hash, this.work);
         this.state.noteStart(this.work);
+        this.communication.propagateStartTask(this.hash, this.work);
+
     }
 
     finish(result : string){
         console.log(result + " result")
         this.result = result;
         this.isFinished = true;
+        this.state.clear();
         this.actualTask?.interupt();
     }
     
     handleFindResult(result : string){
-        this.communication.findResult(this.hash, result);
+        this.communication.propagateFindResult(this.hash, result);
     }
 
 
     finishTask(blockNumber : number){
-        this.communication.finishTask(this.hash, blockNumber);
+        console.log("Finish block number : ", blockNumber);
+        this.communication.propagateFinishTask(this.hash, blockNumber);
         this.state.noteFinish(blockNumber);
-        this.actualTask?.interupt();
         this.startNewTask();
     }
     
@@ -74,7 +75,7 @@ export default class Job implements ConnectionObserver{
             if(noteResult)
                 this.startNewTask();
             else
-                this.communication.startTask(this.hash, this.work);
+                this.communication.propagateStartTask(this.hash, this.work);
     }
     
     notifyEndTask(blockNumber : number){
@@ -82,7 +83,7 @@ export default class Job implements ConnectionObserver{
     }
 
     notifyNewConnection(connectionId: string): void {
-        this.communication.startJob(this.hash , this.state);
+        this.communication.propagateStartJob(this.hash , this.state);
     }
 
     notifyRemoveConnection(connectionId: string): void {

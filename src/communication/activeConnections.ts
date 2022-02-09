@@ -1,8 +1,7 @@
-import Host from "./host";
-import Ping from "../message/ping";
-import ConnectionObserver from "./connectionObserver";
+import {Host, ConnectionObserver} from "../communication";
+import {Ping} from "../message";
 
-export default class ActiveConnections{
+export  class ActiveConnections{
 
     private blackList : Map<string, Date>;
     private activeHost : Host[];

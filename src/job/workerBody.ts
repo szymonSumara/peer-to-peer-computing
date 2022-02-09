@@ -1,6 +1,6 @@
 import  { workerData, parentPort } from 'worker_threads';
 import crypto from  'crypto';
-import WorkBlock from '../work/workBlock.js'
+import {WorkBlock} from '../work'
 const workBlock = new WorkBlock(workerData.blockNumber)
 
 console.log("Start Block " + workBlock.prefix);

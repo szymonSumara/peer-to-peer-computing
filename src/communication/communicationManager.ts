@@ -1,14 +1,11 @@
 import {createSocket, Socket} from "dgram";
-import Host from "./host";
-import ConnectionObserver from "./connectionObserver";
-import MessageObserver from "./messageObserver";
-import Message from "../message/messge";
-import MessageBuilder from "../message/messageBuilder";
-import {MessageType} from "../message/messageType";
 import config from "config";
-import ActiveConnections from "./activeConnections";
 
-export default class ConnectionManager{
+import { Message, MessageBuilder, MessageType } from '../message'
+import {Host, ConnectionObserver, MessageObserver, ActiveConnections} from '../communication'
+
+
+export class ConnectionManager{
 
     public readonly id : string;
     private static instance : ConnectionManager;
@@ -47,6 +44,7 @@ export default class ConnectionManager{
     }
 
     send(message : Message, host : Host){
+        console.log("Send to ", host.ip, host.port);
         const convertedMessage = JSON.stringify(message);
         this.socket.send(
             convertedMessage, 0,
@@ -61,7 +59,7 @@ export default class ConnectionManager{
         this.activeConnections.getHosts().forEach( (host) => this.send(message, host))
     }
 
-    listen(){
+    listen = () => {
         const address = this.socket.address();
         console.log('UDP socket listening on ' + address.address + ':' + address.port);
     }

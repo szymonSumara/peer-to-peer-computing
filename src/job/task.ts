@@ -1,7 +1,7 @@
 import {Worker} from "worker_threads"
-import Job from "./job";
+import {Job} from "../job";
 
-export default class Task{
+export class Task{
     private readonly hash : string
     private readonly blockNumber : number;
     private job : Job;
@@ -11,7 +11,7 @@ export default class Task{
         this.hash = hash;
         this.blockNumber = blockNumber;
         this.job = job;
-        this.worker =  new Worker('./build/task/workerBody.js',{workerData : {hash : this.hash, blockNumber:this.blockNumber}});
+        this.worker =  new Worker('./build/job/workerBody.js',{workerData : {hash : this.hash, blockNumber:this.blockNumber}});
         this.worker.on('message', (message) => {
             if(!message.find)
                 this.job.finishTask(blockNumber);

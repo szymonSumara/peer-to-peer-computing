@@ -1,5 +1,5 @@
-import Message from "../message/messge";
+import { Message } from "../message";
 
-export default interface MessageObserver{
+export interface MessageObserver{
     receiveMessage(message : Message) : void;
 }

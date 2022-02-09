@@ -1,18 +1,10 @@
-import ConnectionManager from "../communication/communicationManager";
-import JobManager from "./jobManager";
-import MessageObserver from "../communication/messageObserver";
-import MessageBuilder from "../message/messageBuilder";
-import Message from "../message/messge";
-import Job from "./job";
-import WorkPartInformation from "../work/workPartInformation";
-import JobState from "./jobState";
-import {MessageType} from "../message/messageType";
-import NewJob from "../message/newJob";
-import EndTask from "../message/endTask";
-import StartTask from "../message/startTask";
-import EndJob from "../message/endJob";
+import {ConnectionManager, MessageObserver} from "../communication";
+import {WorkPartInformation} from "../work";
+import {Job, JobManager, JobState} from '../job';
+import {Message, MessageType, MessageBuilder, NewJob, EndJob, EndTask, StartTask} from '../message';
 
-export default class TaskCommunication implements MessageObserver{
+
+export class JobCommunication implements MessageObserver{
 
     private connectionManager : ConnectionManager;
     private messageBuilder : MessageBuilder;
@@ -30,7 +22,7 @@ export default class TaskCommunication implements MessageObserver{
 
     }
 
-    public startJob(hash : string, state? : JobState ){
+    public propagateStartJob(hash : string, state? : JobState ){
         const message = this.messageBuilder
             .setType(MessageType.NEW_JOB)
             .setHash(hash)
@@ -43,7 +35,7 @@ export default class TaskCommunication implements MessageObserver{
 
     }
 
-    public finishJob(hash : string, result : string){
+    public propagateFinishJob(hash : string, result : string){
         const message = this.messageBuilder
             .setType(MessageType.END_JOB)
             .setHash(hash)
@@ -53,7 +45,7 @@ export default class TaskCommunication implements MessageObserver{
         this.connectionManager.broadcast(message);
     }
 
-    public finishTask(hash : string,  blockNumber : number){
+    public propagateFinishTask(hash : string, blockNumber : number){
         const message = this.messageBuilder
             .setType(MessageType.END_TASK)
             .setHash(hash)
@@ -63,7 +55,7 @@ export default class TaskCommunication implements MessageObserver{
         this.connectionManager.broadcast(message);
     }
 
-    public startTask(hash : string,  workInfo : WorkPartInformation ){
+    public propagateStartTask(hash : string, workInfo : WorkPartInformation ){
         const message = this.messageBuilder
             .setType(MessageType.START_TASK)
             .setHash(hash)
@@ -74,8 +66,8 @@ export default class TaskCommunication implements MessageObserver{
         this.connectionManager.broadcast(message);
     }
 
-    public findResult(hash : string, result : string){
-        this.finishJob(hash,result);
+    public propagateFindResult(hash : string, result : string){
+        this.propagateFinishJob(hash,result);
         this.jobManager.finishJob(hash, result);
     }
 

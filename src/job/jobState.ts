@@ -1,6 +1,6 @@
-import WorkPartInformation from "../work/workPartInformation";
+import {WorkPartInformation} from "../work";
 
-export  default class JobState{
+export  class JobState{
 
     public nextBlock : number;
     public blockInProgress : WorkPartInformation[];
@@ -14,6 +14,13 @@ export  default class JobState{
         this.blockQueue = blockQueue || [];
     }
 
+    clear() {
+        this.blockInProgress = [];
+        this.blockQueue = [];
+        this.nextBlock = -1;
+
+    }
+
     next() : number{
         let blockNumber  =  this.blockQueue.pop();
         if( blockNumber === undefined ){
@@ -25,7 +32,7 @@ export  default class JobState{
 
     // return true if this.blockInProgress was changed
     noteStart( workInfo : WorkPartInformation) : boolean {
-
+        console.log("Note Start");
         this.blockQueue = this.blockQueue.filter(
             blockInQueue => blockInQueue !== workInfo.blockNumber
         );
@@ -35,7 +42,8 @@ export  default class JobState{
         );
 
         if(indexInBlockInProgress !== -1){
-            if(this.blockInProgress[indexInBlockInProgress].startTime > workInfo.startTime){
+            console.log("Time:" ,this.blockInProgress[indexInBlockInProgress].startTime.getTime(), workInfo.startTime.getTime() ,  this.blockInProgress[indexInBlockInProgress].startTime.getTime() > workInfo.startTime .getTime())
+            if(this.blockInProgress[indexInBlockInProgress].startTime.getTime() > workInfo.startTime.getTime()){
                 this.blockInProgress[indexInBlockInProgress] = workInfo;
                 return true;
             }
@@ -43,6 +51,7 @@ export  default class JobState{
             this.blockInProgress.push(workInfo);
             this.nextBlock = Math.max(this.nextBlock, workInfo.blockNumber + 1);
         }
+        console.log(this.blockInProgress);
 
         return false;
     }

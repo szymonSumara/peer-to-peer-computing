@@ -15,5 +15,7 @@
     "skipLibCheck": true,
     "forceConsistentCasingInFileNames": true
   },
-  "include": ["src/*", "src/task/workerBody.ts"]
+  "include": ["src/*",
+    "src/job/workerBody.ts"
+  ]
 }

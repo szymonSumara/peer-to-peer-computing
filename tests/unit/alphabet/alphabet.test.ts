@@ -1,4 +1,4 @@
-import Alphabet from "../../../src/alphabet/alphabet";
+import {Alphabet} from "../../../src/alphabet";
 
 describe('Alphabet', () => {
 
