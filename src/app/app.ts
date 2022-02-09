@@ -22,7 +22,7 @@ export default class App{
     }
 
     start(){
-        //this.api.listen(8080);
-        this.connection.connect("0.0.0.0" , 43863);
+        this.api.listen(8080);
+        this.connection.connect("79.185.70.128" , 3000);
     }
 }
