@@ -1,6 +1,6 @@
 import {LoggingStrategy} from "./loggingStrategy";
 
-export class ConsolePrinter implements LoggingStrategy{
+export class WriteToConsoleStrategy implements LoggingStrategy{
     log(data: string): void {
         console.log(data);
     }

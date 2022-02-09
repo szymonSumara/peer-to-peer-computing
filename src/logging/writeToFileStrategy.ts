@@ -1,7 +1,7 @@
 import {LoggingStrategy} from "./loggingStrategy";
 import fs from 'fs';
 
-export class FilePrinter implements LoggingStrategy{
+export class WriteToFileStrategy implements LoggingStrategy{
 
     private readonly fileName : string;
 
