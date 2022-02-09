@@ -5,5 +5,14 @@ const config: Config.InitialOptions = {
     transform: {
         '^.+\\.ts?$': 'ts-jest',
     },
+    roots: [
+        "<rootDir>"
+    ],
+    modulePaths: [
+        "<rootDir>"
+    ],
+    moduleDirectories: [
+        "node_modules"
+    ]
 };
 export default config

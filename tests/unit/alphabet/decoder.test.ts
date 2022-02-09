@@ -19,7 +19,4 @@ describe('Decoder', () => {
         })
 
     })
-
-
-
 })

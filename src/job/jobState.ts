@@ -32,7 +32,6 @@ export  class JobState{
 
     // return true if this.blockInProgress was changed
     noteStart( workInfo : WorkPartInformation) : boolean {
-        console.log("Note Start");
         this.blockQueue = this.blockQueue.filter(
             blockInQueue => blockInQueue !== workInfo.blockNumber
         );
@@ -51,8 +50,6 @@ export  class JobState{
             this.blockInProgress.push(workInfo);
             this.nextBlock = Math.max(this.nextBlock, workInfo.blockNumber + 1);
         }
-        console.log(this.blockInProgress);
-
         return false;
     }
 

@@ -1,4 +1,4 @@
-import WorkBlock from "../../../src/work/workBlock";
+import {WorkBlock} from "../../../src/work";
 
 describe('WorkBlock', () => {
      it('Test for block number 0', () => {
