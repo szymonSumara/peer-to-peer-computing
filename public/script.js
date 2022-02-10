@@ -1,9 +1,11 @@
+
 function addNewTask(hash){
-    fetch('http://localhost:8080/add/' + hash );
+    fetch(window.location.href + 'add/' + hash );
 }
 
 async function getStat(){
-    const result = await  fetch('http://localhost:8080/stat' );
+    console.log(window.location.href + 'add/');
+    const result = await  fetch(window.location.href + 'stat' );
     const data = await result.json();
     return data;
 }

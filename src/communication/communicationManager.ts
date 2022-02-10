@@ -29,7 +29,7 @@ export class ConnectionManager{
         this.socket = createSocket('udp4');
         this.socket.on('listening',this.listen);
         this.socket.on('message', this.onMessage);
-        this.socket.bind(port, '192.168.1.111');
+        this.socket.bind(port, '0.0.0.0');
 
         setInterval( () => {
             this.ping();

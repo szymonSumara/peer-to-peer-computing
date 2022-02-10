@@ -3,6 +3,7 @@ import { Request, Response } from 'express'
 import http from 'http'
 import { AddressInfo } from 'net'
 import { JobManager} from "../job";
+import cors from 'cors';
 
 export default class ApiProvider{
 
@@ -13,6 +14,7 @@ export default class ApiProvider{
 
         this.jobManager = jobManager;
         this.route = express();
+        this.route.use(cors());
         this.route.use(express.static('public'))
         this.route.get('/add/:hash', (req: Request, res :Response) => {
             this.jobManager.addJobAndPropagate(req.params.hash);
