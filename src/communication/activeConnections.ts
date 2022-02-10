@@ -26,9 +26,9 @@ export  class ActiveConnections{
         if( this.blackList.get(id) !== undefined) return;
 
         const host  = this.activeHost.find( host => host.id === id);
-        if(host !== undefined)
+        if(host !== undefined) {
             host.updateLastActivityTime(new Date(date));
-        else{
+        }else{
             this.activeHost.push( new Host(id, ip, port, new Date(date)))
             this.connectionObservers.forEach(observer => observer.notifyNewConnection(id))
         }
@@ -40,7 +40,6 @@ export  class ActiveConnections{
     }
 
     private removeDisconnectedHosts(){
-        console.log("Active connections : " + this.activeHost.length);
         this.activeHost.forEach( (host) => {
             if(!host.isAlive()){
                 this.blackList.set(host.id, new Date());
@@ -52,7 +51,6 @@ export  class ActiveConnections{
     }
 
     private clearBlackList(){
-        console.log(this.blackList);
         for (const key of this.blackList.keys() ) {
             const date = this.blackList.get(key);
             if(date === undefined) return;
@@ -66,7 +64,8 @@ export  class ActiveConnections{
     }
 
     subscribeConnection(observer :  ConnectionObserver){
-        this.connectionObservers.push(observer);
+        const observerInArr = this.connectionObservers.find(o => o === observer);
+        if(observerInArr === undefined) this.connectionObservers.push(observer);
     }
 
     unsubscribeConnection(observer :  ConnectionObserver){

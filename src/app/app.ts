@@ -3,6 +3,7 @@ import {ConnectionManager} from "../communication";
 import {JobManager} from "../job";
 
 import {Logger , MessageLogger, ConnectionLogger , WriteToFileStrategy, WriteToConsoleStrategy} from "../logging";
+import {WorkBlock} from "../work";
 
 export default class App{
 
@@ -22,7 +23,8 @@ export default class App{
     }
 
     start(){
+
         this.api.listen(8080);
-        this.connection.connect("79.185.70.128" , 3000);
+        this.connection.connect("185.119.122.89" , 3000);
     }
 }

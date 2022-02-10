@@ -5,16 +5,16 @@ import { AddressInfo } from 'net'
 import { JobManager} from "../job";
 
 export default class ApiProvider{
+
     private route : express.Express;
-    private inc : number;
     private jobManager : JobManager;
+
     constructor( jobManager : JobManager){
+
         this.jobManager = jobManager;
-        this.inc = 0;
         this.route = express();
         this.route.use(express.static('public'))
         this.route.get('/add/:hash', (req: Request, res :Response) => {
-            console.log("Get job:" + req.params.hash);
             this.jobManager.addJobAndPropagate(req.params.hash);
             res.send("Start job: " + req.params.hash);
         });
@@ -28,7 +28,6 @@ export default class ApiProvider{
                 this.jobManager.getStat()
             );
         })
-
     }
 
 

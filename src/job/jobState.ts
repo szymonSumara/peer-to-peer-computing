@@ -30,7 +30,6 @@ export  class JobState{
         return blockNumber
     }
 
-    // return true if this.blockInProgress was changed
     noteStart( workInfo : WorkPartInformation) : boolean {
         this.blockQueue = this.blockQueue.filter(
             blockInQueue => blockInQueue !== workInfo.blockNumber
@@ -41,7 +40,6 @@ export  class JobState{
         );
 
         if(indexInBlockInProgress !== -1){
-            console.log("Time:" ,this.blockInProgress[indexInBlockInProgress].startTime.getTime(), workInfo.startTime.getTime() ,  this.blockInProgress[indexInBlockInProgress].startTime.getTime() > workInfo.startTime .getTime())
             if(this.blockInProgress[indexInBlockInProgress].startTime.getTime() > workInfo.startTime.getTime()){
                 this.blockInProgress[indexInBlockInProgress] = workInfo;
                 return true;

@@ -11,6 +11,7 @@ export abstract class Logger{
     }
 
     log( data : string ){
-        this.loggingStrategy.log(`[${this.loggerLabel}][${new Date().getDate()}] ${data} \n`)
+        const d = new Date();
+        this.loggingStrategy.log(`[${this.loggerLabel}][${d.getHours()}:${d.getMinutes()}:${d.getSeconds()}:${d.getMilliseconds()}]  ${data}`)
     }
 }

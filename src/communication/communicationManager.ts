@@ -29,11 +29,11 @@ export class ConnectionManager{
         this.socket = createSocket('udp4');
         this.socket.on('listening',this.listen);
         this.socket.on('message', this.onMessage);
-        this.socket.bind(port, '0.0.0.0');
+        this.socket.bind(port, '192.168.1.111');
 
         setInterval( () => {
             this.ping();
-        }, 2000);
+        }, 1000);
 
     }
 
@@ -44,7 +44,6 @@ export class ConnectionManager{
     }
 
     send(message : Message, host : Host){
-        console.log("Send to ", host.ip, host.port);
         const convertedMessage = JSON.stringify(message);
         this.socket.send(
             convertedMessage, 0,
@@ -54,8 +53,6 @@ export class ConnectionManager{
     }
 
     broadcast(message : Message ){
-        if( message.data.type !== MessageType.PING)
-            console.log("Send :" + message.data.type)
         this.activeConnections.getHosts().forEach( (host) => this.send(message, host))
     }
 
@@ -95,10 +92,9 @@ export class ConnectionManager{
         this.activeConnections.notifyActivity(new Host(nodeId, address, port));
 
         if(parsedMessage.data.type == MessageType.PING) {
-            console.log(`Get ping from ${address}:${port}`)
+            console.log('\x1b[36m%s\x1b[0m',`Get ping from ${address}:${port} ${parsedMessage.sender}`)
             this.activeConnections.handlePingMessage(parsedMessage.data);
         }else {
-            console.log("Recive :" + parsedMessage.data.type)
             this.messageObservers.forEach(observer =>
                 observer.receiveMessage(parsedMessage)
             )
@@ -118,6 +114,6 @@ export class ConnectionManager{
     }
 
     unsubscribeConnection(observer :  ConnectionObserver){
-        this.activeConnections.subscribeConnection(observer);
+        this.activeConnections.unsubscribeConnection(observer);
     }
 }

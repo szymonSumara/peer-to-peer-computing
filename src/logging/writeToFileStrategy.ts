@@ -13,7 +13,6 @@ export class WriteToFileStrategy implements LoggingStrategy{
     log(data: string): void {
         fs.appendFile(this.fileName, data + '\n', function (err) {
             if (err) throw err;
-            console.log('Saved!');
         });
     }
 }

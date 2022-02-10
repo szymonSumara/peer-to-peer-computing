@@ -5,7 +5,7 @@ export  class Host{
     public port : number;
     public date : Date;
     public canBeRemove : boolean = false;
-    private static readonly secondsToRemove: number = 5;
+    private static readonly secondsToRemove: number = 10;
 
     constructor(id : string, ip : string , port : number, date : Date);
     constructor( id : string, ip : string , port : number);

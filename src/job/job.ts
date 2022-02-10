@@ -33,7 +33,7 @@ export class Job implements ConnectionObserver{
     }
 
     private startNewTask(){
-        this.actualTask?.interupt();
+        this.actualTask?.interrupt();
         let blockNumber  =  this.state.next();
 
         this.work = {
@@ -49,11 +49,11 @@ export class Job implements ConnectionObserver{
     }
 
     finish(result : string){
-        console.log(result + " result")
         this.result = result;
         this.isFinished = true;
+        if(this.work !== undefined) this.work.blockNumber = -1;
         this.state.clear();
-        this.actualTask?.interupt();
+        this.actualTask?.interrupt();
     }
     
     handleFindResult(result : string){
@@ -62,7 +62,6 @@ export class Job implements ConnectionObserver{
 
 
     finishTask(blockNumber : number){
-        console.log("Finish block number : ", blockNumber);
         this.communication.propagateFinishTask(this.hash, blockNumber);
         this.state.noteFinish(blockNumber);
         this.startNewTask();

@@ -24,9 +24,7 @@ export class Task{
         this.worker = new Worker('./subTask.ts',{workerData : {hash : this.hash, blockNumber:this.blockNumber}})
     }
 
-    interupt(){
-        console.log("Interupt")
+    interrupt(){
         this.worker.terminate();
-        console.log("Interupt exit")
     }
 }

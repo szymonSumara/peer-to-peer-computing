@@ -3,8 +3,6 @@ import crypto from  'crypto';
 import {WorkBlock} from '../work'
 const workBlock = new WorkBlock(workerData.blockNumber)
 
-console.log("Start Block " + workBlock.prefix);
-
 if(parentPort === null) throw new RangeError();
 
 while(!workBlock.isFinish()){

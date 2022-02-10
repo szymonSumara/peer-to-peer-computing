@@ -82,7 +82,6 @@ export class JobCommunication implements MessageObserver{
     }
 
     receiveMessage(message: Message): void {
-        console.log("reciveMessage");
         switch (message.data.type){
             case MessageType.NEW_JOB:
                 this.handleNewJobMessage(message.data);
@@ -100,7 +99,6 @@ export class JobCommunication implements MessageObserver{
     }
 
     private handleNewJobMessage(data : NewJob){
-        console.log("handleNewJobMessage")
         let {hash, nextBlock, blocksInProgress, blocksInQueue } = data;
         blocksInProgress = blocksInProgress.map( block => {
             block.startTime = new Date(block.startTime);
@@ -110,13 +108,11 @@ export class JobCommunication implements MessageObserver{
     }
 
     private handleEndJobMessage(data : EndJob){
-        console.log("handleEndJobMessage")
         let {hash, result } = data;
         this.jobManager.finishJob(hash, result);
     }
 
     private handleStartTaskMessage(sender: string , data : StartTask){
-        console.log("handleStartTaskMessage")
         const job = this.jobs.get(data.hash);
         if(job === undefined) return;
         job.notifyStartTask({
@@ -127,7 +123,6 @@ export class JobCommunication implements MessageObserver{
     }
 
     private handleEndTaskMessage(data : EndTask){
-        console.log("handleEndTaskMessage")
         const job = this.jobs.get(data.hash);
         if(job === undefined) return;
         job.notifyEndTask( data.blockNumber);

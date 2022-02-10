@@ -21,15 +21,17 @@ export class JobManager{
     }
 
     addJob(hash : string , jobState : JobState) : boolean{
-        const job = new Job(hash, this.jobCommunication, jobState);
+        const job = this.jobs.get(hash);
 
         if(job === undefined) {
-            this.jobs.set(hash, job);
-            this.jobCommunication.addJobAndSubscribe(job);
+            const newJob = new Job(hash, this.jobCommunication, jobState)
+            this.jobs.set(hash, newJob);
+            this.jobCommunication.addJobAndSubscribe(newJob);
             return true;
         }else if(job.isFinished){
             this.jobCommunication.propagateFinishJob(hash, job.result);
         }
+
        return false;
     }
 

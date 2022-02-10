@@ -11,6 +11,6 @@ export class MessageLogger extends Logger implements  MessageObserver{
 
     }
     receiveMessage(message: Message): void {
-        this.log(`Get message with type ${message.data.type.toString()}`);
+        this.log(`Get message with type ${message.data.type.toString()} from ${message.sender}`);
     }
 }
