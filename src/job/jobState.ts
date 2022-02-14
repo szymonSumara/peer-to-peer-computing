@@ -40,7 +40,9 @@ export  class JobState{
         );
 
         if(indexInBlockInProgress !== -1){
-            if(this.blockInProgress[indexInBlockInProgress].startTime.getTime() > workInfo.startTime.getTime()){
+            console.log(this.blockInProgress[indexInBlockInProgress].startTime,workInfo.startTime );
+
+            if(this.blockInProgress[indexInBlockInProgress].startTime > workInfo.startTime){
                 this.blockInProgress[indexInBlockInProgress] = workInfo;
                 return true;
             }

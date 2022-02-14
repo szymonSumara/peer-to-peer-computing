@@ -2,6 +2,7 @@ import {WorkPartInformation} from "../work";
 import {ConnectionObserver} from "../communication";
 import {Task, JobState, JobCommunication} from "../job";
 import {Alphabet} from "../alphabet";
+import process from "process";
 
 export class Job implements ConnectionObserver{
 
@@ -28,7 +29,7 @@ export class Job implements ConnectionObserver{
     public getStat(){
         return {
             hash:this.hash,
-            actualBlocks: this.state.blockInProgress.map( work => this.getWorkRep(work.blockNumber) ),
+            actualBlocks: this.state.blockInProgress.map( work => work.blockNumber ),
             blockQueue: this.state.blockQueue,
             actualSubtaskNumber :   this.work !== undefined ?  this.getWorkRep(this.work.blockNumber) : "",
             nextBlock :  this.getWorkRep(this.state.nextBlock),
@@ -37,18 +38,19 @@ export class Job implements ConnectionObserver{
     }
 
     private getWorkRep(blockNumber : number){
-        if (blockNumber === 0 ) return `${blockNumber} ( - )`;
+        if (blockNumber <= 0 ) return `${blockNumber} ( - )`;
         return `${blockNumber} ( ${this.alphabet.letterFromInt(blockNumber - 1)} )`;
     }
 
     private startNewTask(){
         this.actualTask?.interrupt();
         let blockNumber  =  this.state.next();
+        const hrTime = process.hrtime();
 
         this.work = {
             blockNumber : blockNumber,
             processedBy : "",
-            startTime : new Date(),
+            startTime : hrTime[0] * 1000000000 + hrTime[1],
         }
 
         this.actualTask = new Task(this.hash, blockNumber, this);
@@ -91,7 +93,7 @@ export class Job implements ConnectionObserver{
     }
 
     notifyNewConnection(connectionId: string): void {
-        this.communication.propagateStartJob(this.hash , this.state);
+        setTimeout( () => this.communication.propagateStartJob(this.hash , this.state),2000);
     }
 
     notifyRemoveConnection(connectionId: string): void {

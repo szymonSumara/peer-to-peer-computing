@@ -4,7 +4,7 @@ import {Job, JobManager, JobState} from '../job';
 import {Message, MessageType, MessageBuilder, NewJob, EndJob, EndTask, StartTask} from '../message';
 import {EventLogger} from "../logging/eventLogger";
 import {WriteToFileStrategy} from "../logging";
-
+import  process from "process"
 
 export class JobCommunication implements MessageObserver{
 
@@ -106,10 +106,6 @@ export class JobCommunication implements MessageObserver{
 
     private handleNewJobMessage(data : NewJob){
         let {hash, nextBlock, blocksInProgress, blocksInQueue } = data;
-        blocksInProgress = blocksInProgress.map( block => {
-            block.startTime = new Date(block.startTime);
-            return block;
-        })
         this.jobManager.addJob(hash, new JobState(nextBlock, blocksInProgress,blocksInQueue))
     }
 
@@ -124,7 +120,7 @@ export class JobCommunication implements MessageObserver{
         job.notifyStartTask({
             processedBy:sender,
             blockNumber: data.blockNumber,
-            startTime : new Date(data.startTime)
+            startTime : data.startTime
         });
     }
 

@@ -3,6 +3,6 @@ import { MessageType } from "../index";
 export interface StartTask{
     type : MessageType.START_TASK,
     hash : string,
-    startTime : Date,
+    startTime : number,
     blockNumber : number,
 }

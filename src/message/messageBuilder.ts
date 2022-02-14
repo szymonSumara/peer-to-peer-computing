@@ -8,7 +8,7 @@ export class MessageBuilder{
     private sender: string  | undefined;
     private hash: string  | undefined;
     private blockNumber: number  | undefined;
-    private startTime: Date  | undefined;
+    private startTime: number  | undefined;
     private result: string  | undefined;
     private otherHosts: Host[]  | undefined;
     private nextBlock: number  | undefined;
@@ -46,7 +46,7 @@ export class MessageBuilder{
         return this;
     }
 
-    setStartTime(startTime: Date){
+    setStartTime(startTime: number){
         this.startTime = startTime;
         return this;
     }
