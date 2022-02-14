@@ -4,10 +4,10 @@ import {WorkBlock} from '../work'
 const workBlock = new WorkBlock(workerData.blockNumber)
 
 if(parentPort === null) throw new RangeError();
-
 while(!workBlock.isFinish()){
     const test = workBlock.getNext();
-    const sha256Hasher = crypto.createHash("sha256");
+     const sha256Hasher = crypto.createHash("md5");
+
 
     const testedHash = sha256Hasher.update(test).digest("hex");
     if(testedHash === workerData.hash)

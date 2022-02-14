@@ -1,6 +1,7 @@
 import {WorkPartInformation} from "../work";
 import {ConnectionObserver} from "../communication";
 import {Task, JobState, JobCommunication} from "../job";
+import {Alphabet} from "../alphabet";
 
 export class Job implements ConnectionObserver{
 
@@ -12,24 +13,32 @@ export class Job implements ConnectionObserver{
     private actualTask : Task | undefined;
     private work : WorkPartInformation | undefined ;
 
+    private alphabet : Alphabet;
+
     constructor(hash : string, communication : JobCommunication );
     constructor(hash : string, communication : JobCommunication, state : JobState );
     constructor(hash : string, communication : JobCommunication, state? : JobState){
         this.state = state || new JobState();
         this.communication = communication;
         this.hash = hash;
+        this.alphabet = new Alphabet();
         this.startNewTask();
     }
 
     public getStat(){
         return {
             hash:this.hash,
-            actualBlocks: this.state.blockInProgress.map( work => work.blockNumber ),
+            actualBlocks: this.state.blockInProgress.map( work => this.getWorkRep(work.blockNumber) ),
             blockQueue: this.state.blockQueue,
-            actualSubtaskNumber : this.work?.blockNumber,
-            nextBlock : this.state.nextBlock,
+            actualSubtaskNumber :   this.work !== undefined ?  this.getWorkRep(this.work.blockNumber) : "",
+            nextBlock :  this.getWorkRep(this.state.nextBlock),
             result : this.result,
         }
+    }
+
+    private getWorkRep(blockNumber : number){
+        if (blockNumber === 0 ) return `${blockNumber} ( - )`;
+        return `${blockNumber} ( ${this.alphabet.letterFromInt(blockNumber - 1)} )`;
     }
 
     private startNewTask(){
