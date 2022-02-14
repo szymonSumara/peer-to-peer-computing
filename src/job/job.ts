@@ -1,7 +1,7 @@
 import {WorkPartInformation} from "../work";
 import {ConnectionObserver} from "../communication";
 import {Task, JobState, JobCommunication} from "../job";
-import {Alphabet} from "../alphabet";
+import {Alphabet, Decoder} from "../alphabet";
 import process from "process";
 
 export class Job implements ConnectionObserver{
@@ -14,7 +14,7 @@ export class Job implements ConnectionObserver{
     private actualTask : Task | undefined;
     private work : WorkPartInformation | undefined ;
 
-    private alphabet : Alphabet;
+    private decoder : Decoder;
 
     constructor(hash : string, communication : JobCommunication );
     constructor(hash : string, communication : JobCommunication, state : JobState );
@@ -22,7 +22,7 @@ export class Job implements ConnectionObserver{
         this.state = state || new JobState();
         this.communication = communication;
         this.hash = hash;
-        this.alphabet = new Alphabet();
+        this.decoder = new Decoder(new Alphabet());
         this.startNewTask();
     }
 
@@ -38,8 +38,7 @@ export class Job implements ConnectionObserver{
     }
 
     private getWorkRep(blockNumber : number){
-        if (blockNumber <= 0 ) return `${blockNumber} ( - )`;
-        return `${blockNumber} ( ${this.alphabet.letterFromInt(blockNumber - 1)} )`;
+        return `${blockNumber} ( ${this.decoder.decode(blockNumber)} )`;
     }
 
     private startNewTask(){

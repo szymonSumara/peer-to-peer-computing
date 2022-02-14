@@ -39,7 +39,11 @@ export  class JobState{
             work => work.blockNumber === workInfo.blockNumber
         );
 
+
+
         if(indexInBlockInProgress !== -1){
+
+            if(workInfo.processedBy === this.blockInProgress[indexInBlockInProgress].processedBy) return false;
             console.log(this.blockInProgress[indexInBlockInProgress].startTime,workInfo.startTime );
 
             if(this.blockInProgress[indexInBlockInProgress].startTime > workInfo.startTime){

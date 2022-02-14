@@ -17,7 +17,7 @@ export class ConnectionManager{
     private constructor(){
         this.messageObservers = [];
 
-        this.id = "ID-" + new Date().getTime();
+        this.id = "Szy-Komp-" + new Date().getTime();
         this.messageBuilder = new MessageBuilder();
         this.messageBuilder
             .setSender(this.id)

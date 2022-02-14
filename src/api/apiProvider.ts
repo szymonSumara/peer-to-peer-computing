@@ -17,7 +17,7 @@ export default class ApiProvider{
         this.route.use(cors());
         this.route.use(express.static('public'))
         this.route.get('/add/:hash', (req: Request, res :Response) => {
-            this.jobManager.addJobAndPropagate(req.params.hash);
+            this.jobManager.addJobAndPropagate(req.params.hash.toLowerCase());
             res.send("Start job: " + req.params.hash);
         });
 
