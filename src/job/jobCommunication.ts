@@ -2,6 +2,8 @@ import {ConnectionManager, MessageObserver} from "../communication";
 import {WorkPartInformation} from "../work";
 import {Job, JobManager, JobState} from '../job';
 import {Message, MessageType, MessageBuilder, NewJob, EndJob, EndTask, StartTask} from '../message';
+import {EventLogger} from "../logging/eventLogger";
+import {WriteToFileStrategy} from "../logging";
 
 
 export class JobCommunication implements MessageObserver{
@@ -10,16 +12,16 @@ export class JobCommunication implements MessageObserver{
     private messageBuilder : MessageBuilder;
     private jobManager : JobManager;
     private jobs : Map<string, Job>;
+    private logger : EventLogger;
 
     constructor(jobManager : JobManager){
-
         this.jobManager = jobManager;
         this.jobs = new Map<string, Job>();
         this.connectionManager = ConnectionManager.getInstance();
         this.connectionManager.subscribeMessage(this);
         this.messageBuilder = new MessageBuilder();
         this.messageBuilder.setSender( this.connectionManager.id );
-
+        this.logger = new EventLogger(new WriteToFileStrategy("events.txt"))
     }
 
     public propagateStartJob(hash : string, state? : JobState ){
@@ -30,7 +32,7 @@ export class JobCommunication implements MessageObserver{
             .setBlocksInProgress(state?.blockInProgress || [])
             .setBlocksInQueue(state?.blockQueue || [])
             .getMessage();
-
+        this.logger.thisNewJob(hash);
         this.connectionManager.broadcast(message);
 
     }
@@ -41,7 +43,7 @@ export class JobCommunication implements MessageObserver{
             .setHash(hash)
             .setResult(result)
             .getMessage();
-
+        this.logger.thisEndJob(result, hash);
         this.connectionManager.broadcast(message);
     }
 
@@ -51,7 +53,7 @@ export class JobCommunication implements MessageObserver{
             .setHash(hash)
             .setBlockNumber(blockNumber)
             .getMessage();
-
+        this.logger.thisEndTask(blockNumber, hash);
         this.connectionManager.broadcast(message);
     }
 
@@ -62,7 +64,7 @@ export class JobCommunication implements MessageObserver{
             .setStartTime(workInfo.startTime)
             .setBlockNumber(workInfo.blockNumber)
             .getMessage();
-
+        this.logger.thisStartTask(workInfo.blockNumber, hash);
         this.connectionManager.broadcast(message);
     }
 
@@ -85,15 +87,19 @@ export class JobCommunication implements MessageObserver{
         switch (message.data.type){
             case MessageType.NEW_JOB:
                 this.handleNewJobMessage(message.data);
+                this.logger.otherNewJob(message.sender, message.data.hash);
                 break;
             case MessageType.END_JOB:
                 this.handleEndJobMessage(message.data);
+                this.logger.otherEndJob(message.sender, message.data.result, message.data.hash);
                 break;
             case MessageType.START_TASK:
                 this.handleStartTaskMessage(message.sender, message.data);
+                this.logger.otherStartTask(message.sender, message.data.blockNumber, message.data.hash);
                 break;
             case MessageType.END_TASK:
                 this.handleEndTaskMessage(message.data);
+                this.logger.otherEndTask(message.sender, message.data.blockNumber, message.data.hash);
                 break;
         }
     }
