@@ -64,6 +64,7 @@ export  class JobState{
     }
 
     noteDisconnect( connectId : string ){
+        console.log(this.blockInProgress);
         const interruptedWork = this.blockInProgress.find( work => work.processedBy === connectId);
         if(interruptedWork !== undefined){
             this.blockQueue.push(interruptedWork.blockNumber);

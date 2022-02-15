@@ -92,7 +92,7 @@ export class ConnectionManager{
         this.activeConnections.notifyActivity(new Host(nodeId, address, port));
 
         if(parsedMessage.data.type == MessageType.PING) {
-            //console.log('\x1b[36m%s\x1b[0m',`Get ping from ${address}:${port} ${parsedMessage.sender}`)
+            console.log('\x1b[36m%s\x1b[0m',`Get ping from ${address}:${port} ${parsedMessage.sender}`)
             this.activeConnections.handlePingMessage(parsedMessage.data);
         }else {
             this.messageObservers.forEach(observer =>

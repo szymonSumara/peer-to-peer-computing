@@ -27,16 +27,19 @@ export  class ActiveConnections{
 
         const host  = this.activeHost.find( host => host.id === id);
         if(host !== undefined) {
-            host.updateLastActivityTime(new Date(date));
+            host.updateLastActivityTime(new Date());
         }else{
-            this.activeHost.push( new Host(id, ip, port, new Date(date)))
+            this.activeHost.push( new Host(id, ip, port, new Date()))
             this.connectionObservers.forEach(observer => observer.notifyNewConnection(id))
         }
 
     }
 
     handlePingMessage( data : Ping ){
-        data.othersHosts.forEach( hostData => this.notifyActivity(hostData));
+        data.othersHosts.forEach( hostData => {
+            const hostInActive = this.activeHost.find(h => h.id === hostData.id);
+            if(hostInActive === undefined) this.notifyActivity(hostData)
+        });
     }
 
     private removeDisconnectedHosts(){
