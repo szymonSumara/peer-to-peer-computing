@@ -40,7 +40,6 @@ export  class JobState{
         );
 
 
-
         if(indexInBlockInProgress !== -1){
 
             if(workInfo.processedBy === this.blockInProgress[indexInBlockInProgress].processedBy) return false;
@@ -49,6 +48,15 @@ export  class JobState{
             if(this.blockInProgress[indexInBlockInProgress].startTime > workInfo.startTime){
                 this.blockInProgress[indexInBlockInProgress] = workInfo;
                 return true;
+            }
+
+            if(this.blockInProgress[indexInBlockInProgress].startTime === workInfo.startTime){
+                console.log("Really its happened?");
+
+                if(this.blockInProgress[indexInBlockInProgress].processedBy > workInfo.processedBy) {
+                    this.blockInProgress[indexInBlockInProgress] = workInfo;
+                    return true;
+                }
             }
         }else{
             this.blockInProgress.push(workInfo);

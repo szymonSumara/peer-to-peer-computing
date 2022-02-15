@@ -49,7 +49,7 @@ export class Job implements ConnectionObserver{
         this.work = {
             blockNumber : blockNumber,
             processedBy : ConnectionManager.getInstance().id,
-            startTime : hrTime[0] * 1000000000 + hrTime[1],
+            startTime : new Date().getTime(),
         }
 
         this.actualTask = new Task(this.hash, blockNumber, this);

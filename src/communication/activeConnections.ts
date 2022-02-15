@@ -27,7 +27,7 @@ export  class ActiveConnections{
 
         const host  = this.activeHost.find( host => host.id === id);
         if(host !== undefined) {
-            host.updateLastActivityTime(new Date());
+            host.updateLastActivityTime(new Date(date));
         }else{
             this.activeHost.push( new Host(id, ip, port, new Date()))
             this.connectionObservers.forEach(observer => observer.notifyNewConnection(id))

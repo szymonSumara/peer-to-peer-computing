@@ -15,19 +15,19 @@ describe('JobState', () => {
         const  state = new JobState();
         state.noteStart({
             processedBy:"test1",
-            startTime: new Date(),
+            startTime:1,
             blockNumber:12,
         });
 
         state.noteStart({
             processedBy:"test2",
-            startTime: new Date(),
+            startTime: 2,
             blockNumber:20,
         });
 
         state.noteStart({
             processedBy:"test3",
-            startTime: new Date(),
+            startTime: 1,
             blockNumber:60,
         });
 
@@ -45,7 +45,7 @@ describe('JobState', () => {
 
         state.noteStart({
             processedBy:"test1",
-            startTime: new Date(),
+            startTime:14,
             blockNumber:12,
         });
 
@@ -60,4 +60,32 @@ describe('JobState', () => {
             expect.not.arrayContaining([12]),
         );
     });
+
+    it('Shuld be process by node with lower time', () => {
+        const  state = new JobState();
+        state.noteStart({
+            processedBy:"test1",
+            startTime:10,
+            blockNumber:1,
+        });
+
+        state.noteStart({
+            processedBy:"test2",
+            startTime: 9,
+            blockNumber:1,
+        });
+
+        state.noteStart({
+            processedBy:"test3",
+            startTime:11,
+            blockNumber:1,
+        });
+
+
+
+        const blockInProgress = state.blockInProgress;
+        const work1 = blockInProgress.find(work => work.blockNumber === 1);
+        expect(work1?.processedBy).toBe("test2");
+    });
+
 })
