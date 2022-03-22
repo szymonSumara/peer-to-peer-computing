@@ -1,0 +1,21 @@
+{
+  "$schema": "https://json.schemastore.org/tsconfig",
+  "display": "Node 16",
+
+  "compilerOptions": {
+    "lib": ["es2018"],
+    "module": "commonjs",
+    "target": "es2018",
+    "outDir": "build",
+    "allowSyntheticDefaultImports": true,
+    "noImplicitAny": true,
+    "strictNullChecks": true,
+    "strict": true,
+    "esModuleInterop": true,
+    "skipLibCheck": true,
+    "forceConsistentCasingInFileNames": true
+  },
+  "include": ["src/*",
+    "src/job/workerBody.ts"
+  ]
+}
